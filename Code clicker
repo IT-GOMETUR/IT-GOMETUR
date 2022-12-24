@@ -1,0 +1,28 @@
+from tkinter import *
+import random
+
+window = Tk()
+window.geometry('1200x700')
+window.title('Кликер')
+points = 0
+
+bg_values = ['black', 'blue', 'red', 'lime', 'orange', 'green', '#990066', '#FFDC33', '#434B4D' ]
+bg_index = 0
+
+def check():
+    global points, bg_index
+    b.place(x=random.randint(1, 550), y=random.randint(1, 350))
+    points += 1
+    label['text'] = points
+
+    if points % 10 == 0:
+        bg_index = 0 if bg_index == len(bg_values) else bg_index + 1
+        b['fg'] = bg_values[bg_index]
+
+
+b = Button(text='нажми меня', font=('Arial', 20), fg='black', command=check)
+b.place(x=150, y=100)
+label = Label(text=points, font=('Arial', 15), fg='black')
+label.place(x=10, y=10)
+
+window.mainloop()   
