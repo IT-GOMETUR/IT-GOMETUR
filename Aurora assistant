@@ -1,0 +1,73 @@
+import speech_recognition as sr
+import pyttsx3
+import sys
+import datetime
+import webbrowser
+import os
+
+
+
+name = 'Аврора'
+age = 'один год'
+creator = 'Айти Гометур'
+
+def talk(words):
+    engine = pyttsx3.init()
+    engine.say(words)
+    engine.runAndWait()
+
+talk('Слушаю') 
+
+def command():
+    r = sr.Recognizer()
+    
+    with sr.Microphone(device_index= 1) as source:
+        audio = r.listen(source)
+    
+    try:
+        task = r.recognize_google(audio, language = 'ru-RU').lower()
+        print(f'[log] Уловил: {task}')
+    except:
+        talk('Я вас не раслышала, повторите')
+        task = command()
+        
+    return task
+
+def working(task):
+    if 'привет' in task:
+        talk('Привет!')
+    if 'сколько тебе лет' in task:
+        talk('мне' + age)
+    if 'как дела' in task:
+        talk('Всё хорошо')
+    if 'кто ты' in task:
+        talk('Я ваш голосовой помощник' + name)
+    if 'что делаешь' in task:
+        talk('Работаю в вашем устройстве')
+    if 'сколько время' in task:
+     strTime = datetime.datetime.now().strftime("%H:%M:%S")    
+     talk(f"Сейчас {strTime}")
+    elif 'открой яндекс' in task:
+     webbrowser.open("my.yandex.ru")
+    elif 'музыка' in task:
+     music_dir = 'music' #директория к музыке
+     songs = os.listdir(music_dir)
+     print(songs)    
+     os.startfile(os.path.join(music_dir, songs[0])) 
+    elif 'youtube' in task:
+     webbrowser.open("youtube.com")
+    elif 'telegram' in task:
+     codePath = "D:\Tg\Telegram Desktop\Telegram.exe" #директория к .exe файлу
+     os.startfile(codePath)
+    if 'я занят' in task:
+        talk('Хорошо, не буду мешать')
+    if 'кто твой создатель' in task:
+        talk('Мой создатель' + creator) 
+    if 'расскажи шутку' in task:
+        talk('Если бы программисты были врачами, им бы говорили «У меня болит нога», а они отвечали «Ну не знаю, у меня такая же нога, а ничего не болит». ха-ха-ха')
+    elif 'стоп' in task:
+        talk('Останавливаю')    
+        sys.exit() 
+            
+while True:
+    working(command())
